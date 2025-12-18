@@ -175,7 +175,7 @@ NakedAndAfraid.spawns = {
 {xcell = 26, ycell = 38, x = 249, y = 156, z = 0}, -- Rosewood, vacant house
 {xcell = 38, ycell = 22, x = 222, y = 281, z = 0}, -- Westpointe, vacant house
 {xcell = 36, ycell = 33, x = 111, y = 120, z = 0}, -- muldraugh, vacant house
-{xcell = 36, ycell = 30, x = 285, y = 237, z = 0} -- Muldraugh, abandoned station
+{xcell = 36, ycell = 30, x = 285, y = 237, z = 0}, -- Muldraugh, abandoned station
 {xcell = 11, ycell = 21, x = 71, y = 171, z = 0}, -- Creepy camp near the Sanatorium
 {xcell = 13, ycell = 21, x = 162, y = 223, z = 5}, -- Sunderland Hills Sanatorium
 {xcell = 14, ycell = 20, x = 7, y = 288, z = 0}, -- Vacant house near Sunderland Hills Sanatorium
