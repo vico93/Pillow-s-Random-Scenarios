@@ -162,7 +162,10 @@ HospitalChallenge.MakeItSpicy = function()
 			tile:explode();
 			print("Spice is a fire.");
 		else
-			addZombiesInOutfit(pl:getX() + 12 ,pl:getY()+12, 0, 12, None, 0);
+			local x = pl:getX() + 12;
+			local y = pl:getY() + 12;
+			local z = pl:getZ();
+			addZombiesInOutfit(x, y, z, 12, nil, 0);
 			addSound(getPlayer(), getPlayer():getX(), getPlayer():getY(), 0, 500, 500); 
 			print("Spice is a horde.");
 		end 
@@ -191,10 +194,10 @@ HospitalChallenge.OnNewGame = function()
 			pl:setWornItem(clothes:getBodyLocation(), clothes);
 
 			--set stats 
-			pl:getStats():setDrunkenness(50+pillowmod.drunkmodifier); -- 0 to 100
-			pl:getStats():setThirst(0.25); -- from 0 to 1
-			pl:getStats():setHunger(0.25); -- from 0 to 1
-			pl:getStats():setFatigue(0.25); -- from 0 to 1
+			pl:getStats():set(CharacterStat.INTOXICATION, 50+pillowmod.drunkmodifier);
+			pl:getStats():set(CharacterStat.THIRST, 0.25);
+			pl:getStats():set(CharacterStat.HUNGER, 0.25);
+			pl:getStats():set(CharacterStat.FATIGUE, 0.25); -- from 0 to 1
 
 			HospitalChallenge.ApplyInjuries();
 			if pillowmod.brutalstart then
