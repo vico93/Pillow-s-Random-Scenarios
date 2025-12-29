@@ -19,8 +19,7 @@ HospitalChallenge.DifficultyCheck = function()
 	if ModOptions and ModOptions.getInstance then
 		pillowmod.alwaysdire = PillowModOptions.options.alwaysdire
 		pillowmod.alwaysbrutal = PillowModOptions.options.alwaysbrutal
-	end 
-
+	end
 
 	--1in2 is dire, and 1in4 of those is brutal.
 	if pillowmod.diffcheckdone == nil
@@ -188,9 +187,22 @@ HospitalChallenge.OnNewGame = function()
 
 			--remove all clothes and give player a hospital gown
 			pl:clearWornItems();
-		    pl:getInventory():clear();
+
+			local itemsToRemove = {}
+			local items = inv:getItems()
+			for i=0, items:size()-1 do
+				local item = items:get(i)
+				local type = item:getFullType()
+				if type ~= "Base.Key1" and not item:IsMap() and type ~= "Base.IDcard" and type ~= "Base.IDcard_Female" and type ~= "Base.IDcard_Male" and type ~= "Base.IDcard_Stolen" then
+					table.insert(itemsToRemove, item)
+				end
+			end
+			for _, item in ipairs(itemsToRemove) do
+				inv:Remove(item)
+			end
+
 			clothes = inv:AddItem("Base.HospitalGown");
-			inv:AddItem("Base.KeyRing");
+			-- inv:AddItem("Base.KeyRing");
 			pl:setWornItem(clothes:getBodyLocation(), clothes);
 
 			--set stats 
@@ -241,26 +253,35 @@ HospitalChallenge.Render = function()
 --~ 	getTextManager():DrawStringRight(UIFont.Small, (getCore():getOffscreenWidth()*0.9), 40, "Next wave : " .. tonumber(((60*60) - EightMonthsLater.waveTime)), 1, 1, 1, 0.8);
 end
 
-local ss = ZombRand(6)+1;
-local xcell = 1
-local ycell = 1
-local x = 1
-local y = 1
-if ss == 1 then 
-	xcell = 33; ycell = 42; x = 255; y = 150;-- March Ridge, dr office, exam room ID:341
-elseif ss == 2 then
-	xcell = 39; ycell = 23;x = 171; y = 12; -- West Point,  dr office, exam room ID:114
-elseif ss == 3 then
-	xcell = 39; ycell = 22;x = 187; y = 283; -- West Point,  dentist office 2, exam room ID:133
-elseif ss == 3 then
-	xcell = 36; ycell = 33;x = 77; y = 129;  -- Muldraugh,  cortman medical, exam room ID:298
-elseif ss == 4 then
-	xcell = 26; ycell = 38;x = 287; y = 130;  -- Rosewood, dr office exam room ID:413
-elseif ss == 5 then
-	xcell = 18; ycell = 31;x = 97; y = 286;  -- Isolated Areas,  dr office lobby ID:637
-else
-	xcell = 24; ycell = 27; x = 96; y = 292; -- Ekron,  dr office, exam room ID:495
-end
+HospitalChallenge.spawns = {
+	{worldX = 36, worldY = 33, posX = 63, posY = 145, posZ = 0}, --  Muldraugh, cortman medical, exam room 1
+	{worldX = 36, worldY = 33, posX = 62, posY = 141, posZ = 0}, --  Muldraugh, cortman medical, exam room 2
+	{worldX = 5, worldY = 19, posX = 225, posY = 48, posZ = 0}, -- Brandenburg,  medical center, exam room 1
+	{worldX = 5, worldY = 19, posX = 225, posY = 44, posZ = 0}, -- Brandenburg,  medical center, exam room 2
+	{worldX = 6, worldY = 19, posX = 276, posY = 202, posZ = 0}, -- Brandenburg,  dentist office, exam room
+	{worldX = 1, worldY = 32, posX = 127, posY = 192, posZ = 0}, -- Ekron,  medical center, exam room 1
+	{worldX = 1, worldY = 32, posX = 133, posY = 191, posZ = 0}, -- Ekron,  medical center, exam room 2
+	{worldX = 7, worldY = 47, posX = 129, posY = 253, posZ = 0}, -- Irvington,  school, nurse office
+	{worldX = 39, worldY = 23, posX = 167, posY = 16, posZ = 0}, --  West Point, dr office, exam room
+	{worldX = 39, worldY = 22, posX = 186, posY = 284, posZ = 0}, --  West Point, dentist office, exam room 1
+	{worldX = 39, worldY = 22, posX = 178, posY = 283, posZ = 0}, --  West Point, dentist office, exam room 2
+	{worldX = 33, worldY = 42, posX = 264, posY = 151, posZ = 0}, -- March Ridge, dr office, exam room 1
+	{worldX = 33, worldY = 42, posX = 269, posY = 158, posZ = 0}, -- March Ridge, dr office, exam room 2
+	{worldX = 26, worldY = 38, posX = 284, posY = 125, posZ = 0}, -- Rosewood, Rosewood Medical, exam room 1
+	{worldX = 26, worldY = 38, posX = 283, posY = 130, posZ = 0}, -- Rosewood, Rosewood Medical, exam room 2
+	{worldX = 26, worldY = 38, posX = 292, posY = 121, posZ = 0}, -- Rosewood, Rosewood Medical, exam room 3
+	{worldX = 24, worldY = 27, posX = 97, posY = 292, posZ = 0}, --  Fallas Lake, dr office, exam room
+	{worldX = 21, worldY = 18, posX = 152, posY = 50, posZ = 0}, --  Riverside, school, nurse office
+	{worldX = 18, worldY = 31, posX = 99, posY = 279, posZ = 0}, --   Doe Valley, dr office storage
+	{worldX = 18, worldY = 31, posX = 103, posY = 280, posZ = 0} --  Doe Valley, dr office exam room
+}
+
+local spawnselection = ZombRand(6)+1;
+local xcell = HospitalChallenge.spawns[spawnselection].worldX;
+local ycell = HospitalChallenge.spawns[spawnselection].worldY;
+local x = HospitalChallenge.spawns[spawnselection].posX;
+local y = HospitalChallenge.spawns[spawnselection].posY;
+local z = HospitalChallenge.spawns[spawnselection].posZ;
 
 HospitalChallenge.id = "HospitalChallenge";
 HospitalChallenge.image = "media/lua/client/LastStand/HospitalChallenge.png";
@@ -270,19 +291,8 @@ HospitalChallenge.xcell = xcell;
 HospitalChallenge.ycell = ycell;
 HospitalChallenge.x = x;
 HospitalChallenge.y = y;
-HospitalChallenge.z = 0;
+HospitalChallenge.z = z;
 HospitalChallenge.enableSandbox = true;
-
-HospitalChallenge.spawns = {
-		{worldX = 39, worldY = 23, posX = 171, posY = 12}, -- West Point,  dr office, exam room ID:114
-		{worldX = 39, worldY = 22, posX = 187, posY = 283}, -- West Point,  dentist office 2, exam room ID:133
-		{worldX = 36, worldY = 33, posX = 77, posY = 129}, -- Muldraugh,  cortman medical, exam room ID:298
-		{worldX = 33, worldY = 42, posX = 255, posY = 150}, -- March Ridge, dr office, exam room ID:341
-		{worldX = 26, worldY = 38, posX = 287, posY = 130}, -- Rosewood, dr office exam room ID:413
-		{worldX = 18, worldY = 31, posX = 97, posY = 286}, -- Isolated Areas,  dr office lobby ID:637
-
-
-}
 
 Events.OnChallengeQuery.Add(HospitalChallenge.Add)
 
