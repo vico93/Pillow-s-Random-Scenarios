@@ -81,8 +81,21 @@ local inv = pl:getInventory();
 			pillowmod.building = pl:getCurrentSquare():getRoom():getBuilding();
 			--remove everything
 			pl:clearWornItems();
-		    pl:getInventory():clear();
-		    inv:AddItem("Base.KeyRing");
+
+			local itemsToRemove = {}
+			local items = inv:getItems()
+			for i=0, items:size()-1 do
+				local item = items:get(i)
+				local type = item:getFullType()
+				if type ~= "Base.Key1" and not item:IsMap() and type ~= "Base.IDcard" and type ~= "Base.IDcard_Female" and type ~= "Base.IDcard_Male" and type ~= "Base.IDcard_Stolen" then
+					table.insert(itemsToRemove, item)
+				end
+			end
+			for _, item in ipairs(itemsToRemove) do
+				inv:Remove(item)
+			end
+
+		    -- inv:AddItem("Base.KeyRing");
 
 		    if ZombRand(2) == 1 then
 		    inv:AddItem(NakedAndAfraid.itemlist[ZombRand(7)]);
