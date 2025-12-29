@@ -276,7 +276,7 @@ HospitalChallenge.spawns = {
 	{worldX = 18, worldY = 31, posX = 103, posY = 280, posZ = 0} --  Doe Valley, dr office exam room
 }
 
-local spawnselection = ZombRand(6)+1;
+local spawnselection = ZombRand(#HospitalChallenge.spawns)+1;
 local xcell = HospitalChallenge.spawns[spawnselection].worldX;
 local ycell = HospitalChallenge.spawns[spawnselection].worldY;
 local x = HospitalChallenge.spawns[spawnselection].posX;

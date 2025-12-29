@@ -210,7 +210,7 @@ NakedAndAfraid.spawns = {
 
 
 
-local spawnselection = ZombRand(33)+1;
+local spawnselection = ZombRand(#NakedAndAfraid.spawns)+1;
 local xcell = NakedAndAfraid.spawns[spawnselection].xcell;
 local ycell = NakedAndAfraid.spawns[spawnselection].ycell;
 local x = NakedAndAfraid.spawns[spawnselection].x;
